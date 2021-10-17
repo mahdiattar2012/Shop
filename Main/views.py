@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Product, Category, BrandCategory
 import random
 from django.core.mail import send_mail
@@ -42,3 +42,14 @@ def product_detail(request, slug):
     # product = Product.objects.get(slug = slug)
     product = get_object_or_404(Product, slug = slug)
     return render(request, 'Main/product_detail.html',{'product':product})
+
+def search(request):
+    if request.method == 'POST':
+        if request.POST['search'] == '':
+            products = ''
+            return render(request,'Main/search.html',{'products':products})   
+        else:
+            products = Product.objects.filter(name__contains = request.POST['search'])
+            return render(request,'Main/search.html',{'products':products})
+    else:
+        return redirect('Main:index')

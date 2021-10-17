@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block content %}
+
+<!-------------------- contact -------------------->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 padding-right">
+                    <div class="recommended_items">
+                        <!--recommended_items-->
+                        <h2 class="title text-center">Result</h2>
+                        <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    {% if products %}
+                                    {% for product in products %}
+                                    <div class="col-sm-4">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    {% thumbnail product.image "300x300" as img %}
+                                                    <img src="{{ img.url }}" alt="{{ r_product.slug }}" style="width: 180px;height: 180px;" />
+                                                    {% endthumbnail %}
+                                                    <h2>${{product.price}}</h2>
+                                                    <p>{{product.name}}</p>
+                                                    <a href="{% url 'Main:product_detail' product.slug %}"
+                                                    class="btn btn-default add-to-cart"><i
+                                                        class="fa fa-shopping-cart"></i>Detail</a>
+                                                    <a href="{% url 'Cart:cart_add' product.id %}" class="btn btn-default add-to-cart"><i
+                                                            class="fa fa-shopping-cart"></i>Add to cart</a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <div class="col-sm-12"><h1><b>NOT FOUND</b></h1></div>
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/recommended_items-->
+            </div>
+        </div>
+</section>
+{% endblock %}
