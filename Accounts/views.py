@@ -35,21 +35,28 @@ def user_login(request):
 def user_signup(request):
     if request.method == 'POST':
         rp = request.POST
-        code = randint(10000, 99999)
-        try:
-            User.objects.create_user(rp['first_name'], rp['last_name'], rp['username'], rp['email'], rp['password'], code)
-        except:
-            User.objects.create_user(rp['username'], rp['email'], rp['password'], code)
-        
-        send_mail(
-            'Activation code',
-            f'Hello {rp["first_name"]} {rp["last_name"]}. Your code is {code}. Please enter your code in form.',
-            'shoptest20001@gmail.com',
-            [rp['email']],
-            fail_silently=False,
-        )
-        messages.success(request,'You sign up. Now active')
-        return redirect('Accounts:activation')
+        if User.objects.filter(email = rp['email']):
+            messages.success(request,'This email was exists')
+            return redirect('Accounts:signup')
+        elif User.objects.filter(username = rp['username']):
+            messages.success(request,'This username was exists')
+            return redirect('Accounts:signup')
+        else:
+            code = randint(10000, 99999)
+            try:
+                User.objects.create_user(rp['first_name'], rp['last_name'], rp['username'], rp['email'], rp['password'], code)
+            except:
+                User.objects.create_user(rp['username'], rp['email'], rp['password'], code)
+            
+            send_mail(
+                'Activation code',
+                f'Hello {rp["first_name"]} {rp["last_name"]}. Your code is {code}. Please enter your code in form.',
+                'shoptest20001@gmail.com',
+                [rp['email']],
+                fail_silently=False,
+            )
+            messages.success(request,'You sign up. Now active')
+            return redirect('Accounts:activation')
     else:
         return render(request, 'Accounts/log.html')
 
