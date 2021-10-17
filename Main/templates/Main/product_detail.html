@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 padding-right">
+                <div class="product-details">
+                    <!--product-details-->
+                    <div class="col-sm-4">
+                        <div class="view-product">
+                            <img src="{{ product.image.url }}" alt="" />
+                            <h3>ZOOM</h3>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="product-information">
+                            <!--/product-information-->
+                            <img src="{% static 'images/product-details/new.jpg' %}" class="newarrival" alt="" />
+                            <h2>{{ product.name }}</h2>
+                            <span>
+                                <span>US ${{ product.price }}</span>
+                                <form action="{% url 'Cart:cart_add' product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <label>Quantity:</label>
+                                    <input type="text" name="quantity">
+                                    <button type="submit" class="btn btn-fefault cart">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        Add to cart
+                                    </button>
+                                </form>
+                            </span>
+                            <p><b>Category:</b> {{ product.category }}</p>
+                            <p><b>Availability:</b> {% if product.available %}Available{% else %}Not available{% endif %}</p>
+                            <p><b>Information:</b> {{ product.description }}</p>
+                            <a href=""><img src="{% static 'images/product-details/share.png' %}"
+                                    class="share img-responsive" alt="" /></a>
+                        </div>
+                        <!--/product-information-->
+                    </div>
+                </div>
+                <!--/product-details-->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
