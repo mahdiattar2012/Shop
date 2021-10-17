@@ -1,0 +1,4 @@
+Django==2.1.15
+Pillow==8.3.2
+suds-py3==1.4.4.1
+sorl-thumbnail==12.7.0
